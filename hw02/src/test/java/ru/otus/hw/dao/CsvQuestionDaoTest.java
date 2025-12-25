@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 
 public class CsvQuestionDaoTest {
 
-    private static final String EXISTING_FILE = "questions.csv";
+    private static final String EXISTING_FILE = "questions-test.csv";
     private static final String NON_EXISTENT_FILE = "no-such-file.csv";
 
     @Mock
