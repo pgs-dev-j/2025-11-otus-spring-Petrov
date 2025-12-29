@@ -1,0 +1,4 @@
+# Добавить сюда тестовых вопросов. Пропустить эту строку при парсинге (withSkipLines)
+What is the capital of France?;Paris%true|London%false|Berlin%false|Moscow%false
+How many planets are in the Solar System?;8%true|9%false|7%false|10%false
+Which language is this project written in?;Java%true|Python%false|Kotlin%false|Scala%false
