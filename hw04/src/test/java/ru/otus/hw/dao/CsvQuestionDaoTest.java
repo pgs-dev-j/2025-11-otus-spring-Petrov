@@ -1,10 +1,10 @@
 package ru.otus.hw.dao;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.otus.hw.config.TestFileNameProvider;
 import ru.otus.hw.domain.Question;
 import ru.otus.hw.exceptions.QuestionReadException;
@@ -15,21 +15,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest(classes = {
+        CsvQuestionDao.class,
+        TestFileNameProvider.class
+})
+@ActiveProfiles("test")
 public class CsvQuestionDaoTest {
 
     private static final String EXISTING_FILE = "questions-test.csv";
     private static final String NON_EXISTENT_FILE = "no-such-file.csv";
 
-    @Mock
+    @MockitoBean
     private TestFileNameProvider fileNameProvider;
 
+    @Autowired
     private CsvQuestionDao dao;
-
-    @BeforeEach
-    void setUp() {
-        dao = new CsvQuestionDao(fileNameProvider);
-    }
 
     @Test
     void shouldLoadQuestionsFromExistingFile() {
