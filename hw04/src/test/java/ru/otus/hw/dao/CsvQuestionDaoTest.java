@@ -19,7 +19,6 @@ import static org.mockito.Mockito.when;
         CsvQuestionDao.class,
         TestFileNameProvider.class
 })
-@ActiveProfiles("test")
 public class CsvQuestionDaoTest {
 
     private static final String EXISTING_FILE = "questions-test.csv";
