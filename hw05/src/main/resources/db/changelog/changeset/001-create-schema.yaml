@@ -1,0 +1,83 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-authors-table
+      author: pgs
+      changes:
+        - createTable:
+            tableName: authors
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: varchar(255)
+  - changeSet:
+      id: 001-create-genres-table
+      author: pgs
+      changes:
+        - createTable:
+            tableName: genres
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+  - changeSet:
+      id: 001-create-books-table
+      author: pgs
+      changes:
+        - createTable:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+              - column:
+                  name: author_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_books_author
+                    references: authors(id)
+                    deleteCascade: true
+  - changeSet:
+      id: 001-create-books-genres-table
+      author: pgs
+      changes:
+        - createTable:
+            tableName: books_genres
+            columns:
+              - column:
+                  name: book_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_books_genres_book
+                    references: books(id)
+                    deleteCascade: true
+              - column:
+                  name: genre_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_books_genre_genre
+                    references: genres(id)
+                    deleteCascade: true
