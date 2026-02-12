@@ -65,16 +65,14 @@ class BookRepositoryTest {
         );
 
         Book persistedBook = em.persistAndFlush(bookToSave);
+        em.clear();
 
         var actual = bookRepository.findById(persistedBook.getId());
 
         assertThat(actual)
                 .isPresent()
                 .get()
-                .usingRecursiveComparison()
-                .ignoringFields("id", "author.id", "genres.id")   // игнорируем сгенерированные id
-                .ignoringCollectionOrderInFields("genres")         // порядок жанров может не сохраниться
-                .isEqualTo(expectedTemplate);
+                .isEqualTo(persistedBook);
     }
 
     @DisplayName("должен загружать список всех книг")
@@ -112,6 +110,7 @@ class BookRepositoryTest {
         assertThat(bookRepository.findById(expectedBook.getId()))
                 .isPresent()
                 .get()
+                .usingRecursiveComparison()
                 .isNotEqualTo(expectedBook);
 
         var returnedBook = bookRepository.save(expectedBook);

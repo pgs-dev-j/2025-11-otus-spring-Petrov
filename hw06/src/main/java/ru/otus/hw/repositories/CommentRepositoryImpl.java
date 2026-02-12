@@ -3,7 +3,6 @@ package ru.otus.hw.repositories;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Comment;
 
 import java.util.List;
@@ -23,7 +22,9 @@ public class CommentRepositoryImpl implements CommentRepository {
     public Optional<Comment> findById(long id) {
         List<Comment> list = em.createQuery(
                 "select c from Comment c " +
-                        "left join fetch c.book " +
+                        "left join fetch c.book b " +
+                        "left join fetch b.author " +
+                        "left join fetch b.genres " +
                         "where c.id = :id",
                         Comment.class)
                 .setParameter("id", id)
@@ -35,7 +36,9 @@ public class CommentRepositoryImpl implements CommentRepository {
     public List<Comment> findByBookId(long bookId) {
         return em.createQuery(
                         "select c from Comment c " +
-                                "left join fetch c.book " +
+                                "left join fetch c.book b " +
+                                "left join fetch b.author " +
+                                "left join fetch b.genres " +
                                 "where c.book.id = :bookId",
                         Comment.class)
                 .setParameter("bookId", bookId)
@@ -57,8 +60,6 @@ public class CommentRepositoryImpl implements CommentRepository {
         Comment comment = em.find(Comment.class, id);
         if (comment != null) {
             em.remove(comment);
-        } else {
-            throw new EntityNotFoundException("Comment with id " + id + " not found");
         }
     }
 }

@@ -10,21 +10,41 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinTable;
-import lombok.Data;
+import jakarta.persistence.NamedEntityGraphs;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedAttributeNode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"author", "genres"})
-@ToString(exclude = {"author", "genres"})
+@EqualsAndHashCode(of = "id")
+@ToString(of = {"id", "title"})
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "book-author-graph",
+                attributeNodes = {
+                        @NamedAttributeNode("author")
+                }
+        ),
+        @NamedEntityGraph(
+                name = "book-author-genres-graph",
+                attributeNodes = {
+                        @NamedAttributeNode("author"),
+                        @NamedAttributeNode("genres")
+                }
+        )
+})
 @Table(name = "books")
 @Entity
 public class Book {
