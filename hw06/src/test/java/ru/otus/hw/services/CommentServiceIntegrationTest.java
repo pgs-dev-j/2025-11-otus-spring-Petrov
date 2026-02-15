@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import({CommentServiceImpl.class, CommentRepositoryImpl.class,
         BookServiceImpl.class, BookRepositoryImpl.class,
         AuthorRepositoryImpl.class, GenreRepositoryImpl.class})
+@Transactional(propagation = Propagation.NEVER)
 class CommentServiceIntegrationTest {
 
     @Autowired
@@ -35,7 +36,6 @@ class CommentServiceIntegrationTest {
 
     @DisplayName("должен загружать комментарий с книгой без LazyInitializationException")
     @Test
-    @Transactional(propagation = Propagation.NEVER)
     void shouldLoadCommentWithBookWithoutLazyException() {
         var expectedBook = new Book(1L, "BookTitle_1",
                 new Author(1L, "Author_1"),
@@ -49,14 +49,12 @@ class CommentServiceIntegrationTest {
                 .isEqualTo(expected);
     }
 
-    @DisplayName("должен загружать комментарии по bookId с книгой без LazyInitializationException")
+    @DisplayName("должен загружать комментарии по bookId без LazyInitializationException")
     @Test
-    @Transactional(propagation = Propagation.NEVER)
     void shouldLoadCommentsByBookIdWithBookWithoutLazyException() {
         var comments = commentService.findByBookId(1L);
 
         assertThat(comments).isNotEmpty();
-
         comments.forEach(comment ->
                 assertThat(comment.getBook()).isNotNull()
         );
